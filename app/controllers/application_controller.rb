@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_filter :detect_facebook_post!
+  after_filter :allow_iframe
   protect_from_forgery
   layout :set_layout
 
@@ -63,7 +64,7 @@ class ApplicationController < ActionController::Base
       return @header_session if @header_session
       encrypted_session = request.headers['X-Session']
       secret = FBCanvasRails::Application.config.secret_token
-      verifier = ActiveSupport::MessageVerifier.new(secret, 'SHA1')
+      verifier = ActiveSupport::MessageVerifier.new(secret, :digest => 'SHA1')
       @header_session = verifier.verify(encrypted_session).with_indifferent_access
     else
       logger.info "Reading session from cookies"
@@ -83,8 +84,13 @@ private
       end
     end
 
-  # Session present in request header (for CJAX requests)
-  def has_session_in_header?
-    !!(request.headers['X-Session'])
-  end
+    # Session present in request header (for CJAX requests)
+    def has_session_in_header?
+      !!(request.headers['X-Session'])
+    end
+
+    def allow_iframe
+      response.headers.except! 'X-Frame-Options'
+    end
+
 end

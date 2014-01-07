@@ -1,24 +1,25 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.16'
-gem 'heroku'
+gem 'rails', '~> 4.0.0'
 
-group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  # gem 'therubyracer'
-  gem 'uglifier'
-end
+gem 'puma', '~> 2.7.1'
+gem 'foreman'
+
+gem 'sass-rails', '~> 4.0.0'
+gem 'coffee-rails', '~> 4.0.0'
+gem 'uglifier'
 
 group :development do
   gem 'sqlite3'
+  gem 'meta_request'
 end
 
 group :production do
   gem 'pg'
+  gem 'rails_12factor'
 end
 
-gem 'jquery-rails'
+gem 'jquery-rails', '>= 3.0.0'
 gem 'rack-p3p'
 gem 'rack-facebook-signed-request', :git => 'git://github.com/cmer/rack-facebook-signed-request.git'
 gem 'omniauth', '~> 1.0.2'
